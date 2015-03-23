@@ -13,8 +13,7 @@ namespace WordCount
         static void Main(string[] args)
         {
             string pathSource = Path.Combine(Directory.GetCurrentDirectory(), "wc_input");
-            string pathDestination_WC = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "wc_output"), "wc_result.txt");
-            string pathDestination_Median = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "wc_output"), "med_result.txt");           
+            string pathDestination = Directory.GetCurrentDirectory();                      
 
             if(! Directory.Exists(pathSource))
             {
@@ -115,13 +114,22 @@ namespace WordCount
 
                     #region writing the result to the output file for WordCount
 
-                    string sResult = string.Empty;                    
+                    string sResult = string.Empty;
 
-                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(pathDestination_WC))
+                    string sOutputDirectory = "";
+
+                    sOutputDirectory = Path.Combine(pathDestination, "wc_output");
+
+                    if (!Directory.Exists(sOutputDirectory))
+                    {
+                        System.IO.Directory.CreateDirectory(sOutputDirectory);
+                    }
+
+                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(sOutputDirectory, "wc_result.txt")))
                     {
                         foreach (Object obj in KeysArraylist)
                     {
-                        sResult = String.Format("{0}\t{1}", obj.ToString().PadRight(MaxKeyLength), WordCountsHash[obj].ToString() + '\n');
+                        sResult = String.Format("{0}\t{1}", obj.ToString().PadRight(MaxKeyLength), WordCountsHash[obj].ToString());
                             file.WriteLine(sResult);
                             sResult = string.Empty;
                         }                        
@@ -129,13 +137,13 @@ namespace WordCount
               
                     #endregion
 
-                    #region writing the result to the output file for Running Median
+                    #region writing the result to the output file for Running Median                    
 
-                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(pathDestination_Median))
+                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(sOutputDirectory, "med_result.txt")))
                     {
                         foreach (double obj in RunningMedian)
                         {
-                            file.WriteLine(obj.ToString("N1") + '\n');                  
+                            file.WriteLine(obj.ToString("N1"));                  
                         }
                     }
 
