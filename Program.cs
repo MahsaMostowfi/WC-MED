@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Collections;
 using System.Configuration;
+using System.Text.RegularExpressions;
 
 namespace WordCount
 {
@@ -59,8 +60,11 @@ namespace WordCount
 
                                 foreach (string Word in Words)
                                 {
-                                    string TrimmedWord = Word.TrimEnd(' ').Replace("-", "").Replace("\'", "").Replace("’", "").Replace(",", "").ToLower();
 
+                                    Regex pattern = new Regex("[-\'’;,.\"?!()]");
+
+                                    string TrimmedWord = pattern.Replace(Word.TrimEnd(' '), "");
+                                    
                                     if (TrimmedWord != string.Empty)
                                     {
                                         if (!WordCountsHash.ContainsKey(TrimmedWord))
