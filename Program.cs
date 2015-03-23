@@ -63,7 +63,7 @@ namespace WordCount
 
                                     Regex pattern = new Regex("[-\'’;,.\"?!()]");
 
-                                    string TrimmedWord = pattern.Replace(Word.TrimEnd(' '), "");
+                                    string TrimmedWord = pattern.Replace(Word.TrimEnd(' '), "").ToLower();
                                     
                                     if (TrimmedWord != string.Empty)
                                     {
